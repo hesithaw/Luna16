@@ -1,5 +1,5 @@
 import random
-
+import sys
 import torch
 import numpy as np
 import time
@@ -13,6 +13,7 @@ from main.dataset import LunaDataSet
 from torch.utils.data import DataLoader
 from configs import VAL_PCT, TOTAL_EPOCHS, DEFAULT_LR, OUTPUT_PATH
 from glob import glob
+from model.pretrained_nets import PretrainedNets
 
 
 def get_lr(epoch):
@@ -104,10 +105,18 @@ regress loss {np.mean(metrics[:, 2])}, {np.mean(metrics[:, 3])},
 {np.mean(metrics[:, 4])}, {np.mean(metrics[:, 5])}''')
 
 
-def run(load_last_checkpoint=False):
+def run(load_last_checkpoint=False, net_name=""):
     save_dir = f'{OUTPUT_PATH}/models/'
     os.makedirs(save_dir, exist_ok=True)
-    neural_net = Net()
+	print(f'net_name = {net_name}')
+	if net_name != "":
+		pre_nets = PretrainedNets()
+		neural_net = pre_nets.getpretrainednet(net_name)
+		print(f'selected pre trained net : {neural_net.name}')
+		if neural_net == -1:
+			return
+	else:
+		neural_net = Net()
     loss_fn = Loss()
     optim = torch.optim.SGD(neural_net.parameters(), DEFAULT_LR, momentum=0.9, weight_decay=1e-4)
     starting_epoch = 0
@@ -145,4 +154,7 @@ with learning rate starting from: {get_lr(starting_epoch)}, and loss: {initial_l
 
 
 if __name__ == '__main__':
-    run(load_last_checkpoint=False)
+	if len(sys.argv) == 2:
+		run(load_last_checkpoint=False, sys.argv[1])
+	else:
+		run(load_last_checkpoint=False)
