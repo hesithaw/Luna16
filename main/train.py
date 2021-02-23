@@ -155,6 +155,6 @@ with learning rate starting from: {get_lr(starting_epoch)}, and loss: {initial_l
 
 if __name__ == '__main__':
 	if len(sys.argv) == 2:
-		run(load_last_checkpoint=False, sys.argv[1])
+		run(load_last_checkpoint=False, net_name=sys.argv[1])
 	else:
 		run(load_last_checkpoint=False)
