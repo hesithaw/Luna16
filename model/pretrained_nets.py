@@ -2,16 +2,6 @@ import torchvision.models as models
 import torch.nn as nn 
 
 class PretrainedNets:
-	def getpretrainednet(netName):
-		if netName == "resnet18":
-			return getresnet18()
-		elif netName == "densenet161":
-			return getdensenet161()
-		elif netName == "vgg16":
-			return getvgg16()
-		else:
-			print('Invalid pretrained net! Enter following available net\n resnet18\n densenet161\n vgg16\n')
-			return -1
 			
 	def getresnet18():
 		resnet18 = models.resnet18(pretrained=True)
@@ -48,3 +38,14 @@ class PretrainedNets:
 							  nn.LogSoftmax(dim=1))
 		vgg16.name = 'vgg16'
 		return vgg16
+		
+	def getpretrainednet(self,netName):
+		if netName == "resnet18":
+			return getresnet18()
+		elif netName == "densenet161":
+			return getdensenet161()
+		elif netName == "vgg16":
+			return getvgg16()
+		else:
+			print('Invalid pretrained net! Enter following available net\n resnet18\n densenet161\n vgg16\n')
+			return -1
