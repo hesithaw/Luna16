@@ -1,4 +1,4 @@
-from prepare._classes import PatchMaker
+from _classes import PatchMaker
 import pandas as pd
 import os
 from configs import OUTPUT_PATH

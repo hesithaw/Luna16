@@ -4,16 +4,17 @@ import torch
 import numpy as np
 import time
 import os
-from model.net import Net
-from model.loss import Loss
+sys.path.append('D:\Academic\Luna16\model')
+from net import Net
+from loss import Loss
 from torch.autograd import Variable
 import itertools
 import pandas as pd
-from main.dataset import LunaDataSet
+from dataset import LunaDataSet
 from torch.utils.data import DataLoader
 from configs import VAL_PCT, TOTAL_EPOCHS, DEFAULT_LR, OUTPUT_PATH
 from glob import glob
-from model.pretrained_nets import PretrainedNets
+from pretrained_nets import PretrainedNets
 
 
 def get_lr(epoch):
@@ -108,15 +109,15 @@ regress loss {np.mean(metrics[:, 2])}, {np.mean(metrics[:, 3])},
 def run(load_last_checkpoint=False, net_name=""):
     save_dir = f'{OUTPUT_PATH}/models/'
     os.makedirs(save_dir, exist_ok=True)
-	print(f'net_name = {net_name}')
-	if net_name != "":
-		pre_nets = PretrainedNets()
-		neural_net = pre_nets.getpretrainednet(net_name)
-		print(f'selected pre trained net : {neural_net.name}')
-		if neural_net == -1:
-			return
-	else:
-		neural_net = Net()
+    print(f'net_name = {net_name}')
+    if net_name != "":
+        pre_nets = PretrainedNets()
+        neural_net = pre_nets.getpretrainednet(net_name)
+        print(f'selected pre trained net : {neural_net.name}')
+        if neural_net == -1:
+            return
+    else:
+        neural_net = Net()
     loss_fn = Loss()
     optim = torch.optim.SGD(neural_net.parameters(), DEFAULT_LR, momentum=0.9, weight_decay=1e-4)
     starting_epoch = 0
